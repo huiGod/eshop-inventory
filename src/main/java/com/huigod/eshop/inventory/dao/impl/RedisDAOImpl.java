@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import redis.clients.jedis.JedisCluster;
 
 @Repository("redisDAO")
-public class RedisDAOImpl implements RedisDAO{
+public class RedisDAOImpl implements RedisDAO {
 
   @Resource
   private JedisCluster jedisCluster;

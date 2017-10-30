@@ -56,4 +56,22 @@ public class RequestQueue {
   public void addQueue(ArrayBlockingQueue queue) {
     this.queues.add(queue);
   }
+
+  /**
+   * @Author: huiGod
+   * @Description: return queue size
+   * @Date: 8:36 PM 30/10/2017
+   */
+  public int queueSize() {
+    return queues.size();
+  }
+
+  /**
+   * @Author: huiGod
+   * @Description: get queue by index
+   * @Date: 8:38 PM 30/10/2017
+   */
+  public ArrayBlockingQueue<Request> getQueue(int index) {
+    return queues.get(index);
+  }
 }

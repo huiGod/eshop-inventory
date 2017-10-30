@@ -14,8 +14,14 @@ public class RequestProcessorThread implements Callable<Boolean> {
 
   @Override
   public Boolean call() throws Exception {
-    while (true) {
-      break;
+    try {
+      while (true) {
+        //ArrayBlockingQueue will be blocked when queue is empty or full
+        Request request = queue.take();
+        request.process();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     return true;
   }

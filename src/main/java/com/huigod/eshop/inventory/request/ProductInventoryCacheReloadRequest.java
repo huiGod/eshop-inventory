@@ -1,5 +1,6 @@
 package com.huigod.eshop.inventory.request;
 
+
 import com.huigod.eshop.inventory.model.ProductInventory;
 import com.huigod.eshop.inventory.service.ProductInventoryService;
 
@@ -27,5 +28,10 @@ public class ProductInventoryCacheReloadRequest implements Request {
         .findProductInventory(productInventoryId);
     //set data to redis cache
     productInventoryService.setProductInventoryCache(productInventory);
+  }
+
+  @Override
+  public Integer getProductId() {
+    return productInventoryId;
   }
 }

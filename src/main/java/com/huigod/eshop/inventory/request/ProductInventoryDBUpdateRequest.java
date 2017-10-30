@@ -28,4 +28,9 @@ public class ProductInventoryDBUpdateRequest implements Request {
     //update data in DB
     productInventoryService.updateProductInventory(productInventory);
   }
+
+  @Override
+  public Integer getProductId(){
+    return productInventory.getProductId();
+  }
 }

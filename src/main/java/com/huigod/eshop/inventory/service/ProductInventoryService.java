@@ -1,6 +1,7 @@
 package com.huigod.eshop.inventory.service;
 
 import com.huigod.eshop.inventory.model.ProductInventory;
+
 /**
  * @Author: huiGod
  * @Description: product inventory interface
@@ -35,4 +36,11 @@ public interface ProductInventoryService {
    * @Date: 9:29 PM 29/10/2017
    */
   void setProductInventoryCache(ProductInventory productInventory);
+
+  /**
+   * @Date: 9:09 PM 30/10/2017
+   * @Author: huiGod
+   * @Description: get product inventory cache
+   */
+  ProductInventory getProductInventoryCache(Integer productId);
 }
