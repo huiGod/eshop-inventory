@@ -2,12 +2,17 @@ package com.huigod.eshop.inventory.request;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestQueue {
 
   //内存队列
   private List<ArrayBlockingQueue<Request>> queues = new ArrayList<>();
+
+  //flag map
+  private Map<Integer, Boolean> flagMap = new ConcurrentHashMap<>();
 
 
   /**
@@ -73,5 +78,14 @@ public class RequestQueue {
    */
   public ArrayBlockingQueue<Request> getQueue(int index) {
     return queues.get(index);
+  }
+
+  /**
+   * @Date: 11:12 PM 06/11/2017
+   * @Author: huiGod
+   * @Description: get flag map
+   */
+  public Map<Integer, Boolean> getFlagMap() {
+    return flagMap;
   }
 }

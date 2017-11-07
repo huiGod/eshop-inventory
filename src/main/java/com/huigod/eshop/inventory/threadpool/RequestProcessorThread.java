@@ -18,7 +18,9 @@ public class RequestProcessorThread implements Callable<Boolean> {
       while (true) {
         //ArrayBlockingQueue will be blocked when queue is empty or full
         Request request = queue.take();
-        request.process();
+        boolean forceRefresh = request.isForceRefresh();
+
+
       }
     } catch (Exception e) {
       e.printStackTrace();

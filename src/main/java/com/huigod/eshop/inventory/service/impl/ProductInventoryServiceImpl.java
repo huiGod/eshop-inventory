@@ -40,7 +40,7 @@ public class ProductInventoryServiceImpl implements ProductInventoryService {
 
   @Override
   public ProductInventory getProductInventoryCache(Integer productId) {
-    Long inventoryCnt = 0L;
+    Long inventoryCnt;
     String key = "product:inventory:" + productId;
     String result = redisDAO.get(key);
     if (!StringUtils.isEmpty(result)) {

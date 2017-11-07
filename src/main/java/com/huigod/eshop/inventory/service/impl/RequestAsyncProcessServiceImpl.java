@@ -1,8 +1,11 @@
 package com.huigod.eshop.inventory.service.impl;
 
+import com.huigod.eshop.inventory.request.ProductInventoryCacheRefreshRequest;
+import com.huigod.eshop.inventory.request.ProductInventoryDBUpdateRequest;
 import com.huigod.eshop.inventory.request.Request;
 import com.huigod.eshop.inventory.request.RequestQueue;
 import com.huigod.eshop.inventory.service.RequestAsyncProcessService;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,29 @@ public class RequestAsyncProcessServiceImpl implements RequestAsyncProcessServic
   public void process(Request request) {
 
     try {
+      //filter multiple read request
+      RequestQueue requestQueue = RequestQueue.getInstance();
+      Map<Integer, Boolean> flagMap = requestQueue.getFlagMap();
+
+      if (request instanceof ProductInventoryDBUpdateRequest) {
+        //set productId flag to true when request is update
+        flagMap.put(request.getProductId(), true);
+      } else if (request instanceof ProductInventoryCacheRefreshRequest) {
+        //when request is refresh
+        //if flag is not null and is true,meaning there is a update request in queue before
+        Boolean flag = flagMap.get(request.getProductId());
+        if (flag != null && flag) {
+          flagMap.put(request.getProductId(), false);
+        }
+        //if flag is not null and is false,meaning there are a update request and a refresh request
+        if (flag != null && !flag) {
+          //filter this request and not putting in queue
+          return;
+        }
+      }
+      //route to queue by productId
       ArrayBlockingQueue<Request> queue = getRoutingQuequ(request.getProductId());
+      //put request to queue
       queue.put(request);
     } catch (InterruptedException e) {
       e.printStackTrace();

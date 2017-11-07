@@ -1,7 +1,7 @@
 package com.huigod.eshop.inventory.controller;
 
 import com.huigod.eshop.inventory.model.ProductInventory;
-import com.huigod.eshop.inventory.request.ProductInventoryCacheReloadRequest;
+import com.huigod.eshop.inventory.request.ProductInventoryCacheRefreshRequest;
 import com.huigod.eshop.inventory.request.ProductInventoryDBUpdateRequest;
 import com.huigod.eshop.inventory.request.Request;
 import com.huigod.eshop.inventory.service.ProductInventoryService;
@@ -28,6 +28,9 @@ public class ProductInventoryController {
   @RequestMapping("/updateProductInventory")
   @ResponseBody
   public Response updateProductInventory(ProductInventory productInventory) {
+    System.out.println(
+        "===========日志===========: 接收到更新商品库存的请求，商品id=" + productInventory.getProductId()
+            + ", 商品库存数量=" + productInventory.getInventoryCnt());
     Response response;
     try {
       Request request = new ProductInventoryDBUpdateRequest(productInventory,
@@ -45,10 +48,11 @@ public class ProductInventoryController {
   @RequestMapping("/getProductInventory")
   @ResponseBody
   public ProductInventory getProductInventory(Integer productId) {
+    System.out.println("===========日志===========: 接收到一个商品库存的读请求，商品id=" + productId);
     ProductInventory productInventory;
     try {
-      Request request = new ProductInventoryCacheReloadRequest(productId,
-          productInventoryService);
+      Request request = new ProductInventoryCacheRefreshRequest(productId,
+          productInventoryService,false);
       requestAsyncProcessService.process(request);
 
       //async execute request then wait short time to try to get inventory cache data updated before
@@ -64,6 +68,9 @@ public class ProductInventoryController {
         //try to get data from cache
         productInventory = productInventoryService.getProductInventoryCache(productId);
         if (productInventory != null) {
+          System.out.println(
+              "===========日志===========: 在200ms内读取到了redis中的库存缓存，商品id=" + productInventory
+                  .getProductId() + ", 商品库存数量=" + productInventory.getInventoryCnt());
           return productInventory;
         } else {
           Thread.sleep(20);
@@ -75,6 +82,10 @@ public class ProductInventoryController {
       //retrieve data from DB
       productInventory = productInventoryService.findProductInventory(productId);
       if (productInventory != null) {
+        //refresh cache
+        request = new ProductInventoryCacheRefreshRequest(
+            productId, productInventoryService, true);
+        requestAsyncProcessService.process(request);
         return productInventory;
       }
 
