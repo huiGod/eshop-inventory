@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestQueue {
 
-  //内存队列
+  //memory queue
   private List<ArrayBlockingQueue<Request>> queues = new ArrayList<>();
 
   //flag map
@@ -17,7 +17,7 @@ public class RequestQueue {
 
   /**
    * @Author: huiGod
-   * @Description: 使用内部类的方式实现单例模式
+   * @Description: Singleton pattern with inner class load
    * @Date: 6:01 PM 29/10/2017
    */
   private static class Singleton {

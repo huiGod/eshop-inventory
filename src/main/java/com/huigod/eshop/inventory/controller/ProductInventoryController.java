@@ -52,7 +52,7 @@ public class ProductInventoryController {
     ProductInventory productInventory;
     try {
       Request request = new ProductInventoryCacheRefreshRequest(productId,
-          productInventoryService,false);
+          productInventoryService, false);
       requestAsyncProcessService.process(request);
 
       //async execute request then wait short time to try to get inventory cache data updated before
@@ -86,6 +86,13 @@ public class ProductInventoryController {
         request = new ProductInventoryCacheRefreshRequest(
             productId, productInventoryService, true);
         requestAsyncProcessService.process(request);
+        //Some cases will process to here
+        //1.Refresh data to redis firstly,but throw away since redis memory is full.
+        //The flag is still flag,cause subsequent read request can not retrive data from redis.
+        //So force to refresh cache
+        //2.There is a read request processing in queue beyond 200ms (should optimize pc in prod env)
+        //So directly query from db and then force to refresh cache
+        //3.Across redis without data in db,then request arrive in db.
         return productInventory;
       }
 
