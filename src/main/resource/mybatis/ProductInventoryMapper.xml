@@ -6,12 +6,12 @@
 
   <select id="updateProductInventory"
     parameterType="com.huigod.eshop.inventory.model.ProductInventory">
-    UPDATE inventory_cnt set inventory_cnt=#{inventoryCnt} WHERE product_id=#{productId}
+    UPDATE product_inventory set inventory_cnt=#{inventoryCnt} WHERE product_id=#{productId}
   </select>
 
   <select id="findProductInventory"
-    parameterType="com.huigod.eshop.inventory.model.ProductInventory">
-    SELECT product_id AS 'ProductI d',inventory_cnt AS 'inventoryCnt' FROM product_inventory WHERE
+    resultType="com.huigod.eshop.inventory.model.ProductInventory">
+    SELECT product_id AS 'productId',inventory_cnt AS 'inventoryCnt' FROM product_inventory WHERE
     product_id=#{productId}
   </select>
 

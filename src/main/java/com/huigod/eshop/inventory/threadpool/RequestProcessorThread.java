@@ -36,11 +36,11 @@ public class RequestProcessorThread implements Callable<Boolean> {
             //when request is refresh
             Boolean flag = flagMap.get(request.getProductId());
             //if flag is not null and is true,meaning there is a update request in queue before
-            if (flag != null && flag) {
-              flagMap.put(request.getProductId(), false);
-            }
             //Maybe no data in redis but exists value in db
             if (flag == null) {
+              flagMap.put(request.getProductId(), false);
+            }
+            if (flag != null && flag) {
               flagMap.put(request.getProductId(), false);
             }
             //if flag is not null and is false,meaning there are a update request and a refresh request
@@ -50,7 +50,7 @@ public class RequestProcessorThread implements Callable<Boolean> {
             }
           }
         }
-
+        System.out.println("===========日志===========:工作线程处理请求，商品id=" + request.getProductId());
         request.process();
 
       }

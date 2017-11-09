@@ -11,6 +11,9 @@ public class ProductInventory {
 
   private Long inventoryCnt;
 
+  public ProductInventory() {
+  }
+
   public Integer getProductId() {
     return productId;
   }

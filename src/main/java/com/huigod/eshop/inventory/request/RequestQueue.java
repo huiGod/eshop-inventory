@@ -46,15 +46,6 @@ public class RequestQueue {
 
   /**
    * @Author: huiGod
-   * @Description: 初始化的便捷方法
-   * @Date: 6:04 PM 29/10/2017
-   */
-  public static void init() {
-    getInstance();
-  }
-
-  /**
-   * @Author: huiGod
    * @Description: 添加一个内存队列
    * @Date: 8:23 PM 29/10/2017
    */

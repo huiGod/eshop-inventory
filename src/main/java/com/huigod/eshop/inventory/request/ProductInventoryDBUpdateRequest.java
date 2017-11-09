@@ -27,7 +27,12 @@ public class ProductInventoryDBUpdateRequest implements Request {
             + ", 商品库存数量=" + productInventory.getInventoryCnt());
     //delete cache in redis
     productInventoryService.removeProductInventoryCache(productInventory);
-
+    //simulate read request come in during update process
+    try {
+      Thread.sleep(10000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     //update data in DB
     productInventoryService.updateProductInventory(productInventory);
   }
