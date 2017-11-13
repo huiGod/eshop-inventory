@@ -45,6 +45,23 @@ public class ProductInventoryController {
     return response;
   }
 
+  @RequestMapping("/testQueue")
+  @ResponseBody
+  public Response testQueue() {
+    Response response;
+    try {
+      Request request = new ProductInventoryCacheRefreshRequest(1,
+          productInventoryService, false);
+      requestAsyncProcessService.process(request);
+      response = new Response(Response.SUCCESS);
+    } catch (Exception e) {
+      e.printStackTrace();
+      response = new Response(Response.FAILURE);
+    }
+
+    return response;
+  }
+
   @RequestMapping("/getProductInventory")
   @ResponseBody
   public ProductInventory getProductInventory(Integer productId) {
